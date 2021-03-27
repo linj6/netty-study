@@ -2,10 +2,7 @@ package com.lnjecit.netty.client;
 
 import com.lnjecit.netty.client.console.ConsoleCommandManager;
 import com.lnjecit.netty.client.console.LoginConsoleCommand;
-import com.lnjecit.netty.client.handler.CreateGroupResponseHandler;
-import com.lnjecit.netty.client.handler.LoginResponseHandler;
-import com.lnjecit.netty.client.handler.LogoutResponseHandler;
-import com.lnjecit.netty.client.handler.MessageResponseHandler;
+import com.lnjecit.netty.client.handler.*;
 import com.lnjecit.netty.codec.PacketDecoder;
 import com.lnjecit.netty.codec.PacketEncoder;
 import com.lnjecit.netty.codec.Spliter;
@@ -48,6 +45,9 @@ public class NettyClient {
                         ch.pipeline().addLast(new LogoutResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
