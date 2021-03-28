@@ -6,6 +6,7 @@ import com.lnjecit.netty.client.handler.*;
 import com.lnjecit.netty.codec.PacketDecoder;
 import com.lnjecit.netty.codec.PacketEncoder;
 import com.lnjecit.netty.codec.Spliter;
+import com.lnjecit.netty.handler.IMIdleStateHandler;
 import com.lnjecit.netty.util.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -39,6 +40,7 @@ public class NettyClient {
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     public void initChannel(SocketChannel ch) {
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
@@ -50,6 +52,8 @@ public class NettyClient {
                         ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new GroupMessageResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
+
+                        ch.pipeline().addLast(new HeartBeatTimerHandler());
                     }
                 });
 

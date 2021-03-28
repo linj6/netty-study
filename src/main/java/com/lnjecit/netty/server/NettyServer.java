@@ -3,6 +3,7 @@ package com.lnjecit.netty.server;
 import com.lnjecit.netty.codec.PacketDecoder;
 import com.lnjecit.netty.codec.PacketEncoder;
 import com.lnjecit.netty.codec.Spliter;
+import com.lnjecit.netty.handler.IMIdleStateHandler;
 import com.lnjecit.netty.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -31,9 +32,11 @@ public class NettyServer {
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
                     protected void initChannel(NioSocketChannel ch) {
+                        ch.pipeline().addLast(new IMIdleStateHandler());
                         ch.pipeline().addLast(new Spliter());
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginRequestHandler());
+                        ch.pipeline().addLast(new HeartBeatTimerRequestHandler());
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
                         ch.pipeline().addLast(new CreateGroupRequestHandler());

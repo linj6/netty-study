@@ -20,6 +20,7 @@ public class QuitGroupRequestHandler extends SimpleChannelInboundHandler<QuitGro
         quitGroupResponsePacket.setUsername(SessionUtil.getSession(ctx.channel()).getUsername());
         quitGroupResponsePacket.setSuccess(true);
 
-        ctx.channel().writeAndFlush(quitGroupResponsePacket);
+//        channelGroup.writeAndFlush(quitGroupResponsePacket);
+        ctx.channel().writeAndFlush(quitGroupRequestPacket);
     }
 }
